@@ -1,0 +1,60 @@
+Apr 23, 2025 3:14:54 PM oracle.okv.service.OKVService okvEnvSetConfig
+INFO: Oracle Key Vault Java SDK Version: 21.10.0.0.0
+
+Apr 23, 2025 3:14:54 PM oracle.okv.service.OKVClientConfig setClientConfigFile
+INFO: No configuration file has been given by the client.
+Apr 23, 2025 3:14:54 PM oracle.okv.service.OKVClientConfig setClientConfigFile
+INFO: Configuration File identified : /var/lib/edb/kmip/okv/conf/okvclient.ora
+Apr 23, 2025 3:14:54 PM oracle.okv.service.OKVConnCtx clientConnFindServer
+INFO: Trying to reach server: 10.0.0.135
+Apr 23, 2025 3:14:54 PM oracle.okv.kmip.OKVSSLConnection setupSSLConnection
+INFO: Connection to OKV Server successful...
+
+Apr 23, 2025 3:14:54 PM oracle.okv.service.OKVTransporterImpl executeOperation
+INFO: Operation message contents: 
+    Tag: Request Message  Type: Structure  Length: 376 
+      Tag: Request Header  Type: Structure  Length: 72 
+        Tag: Protocol Version  Type: Structure  Length: 32 
+          Tag: Protocol Version Major  Type: Integer  Length: 4 
+          Tag: Protocol Version Minor  Type: Integer  Length: 4 
+        Tag: Maximum Response Size  Type: Integer  Length: 4 
+        Tag: Batch Count  Type: Integer  Length: 4 
+      Tag: Batch Item  Type: Structure  Length: 288 
+        Tag: Operation   Type: Enumeration  Length: 4 Value: Decrypt 
+        Tag: Unique Batch Item ID  Type: ByteString  Length: 1 
+        Tag: Request Payload  Type: Structure  Length: 248 
+          Tag: Unique Identifier  Type: TextString  Length: 36  Value: 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 
+          Tag: Data  Type: ByteString  Length: 128 
+          Tag: IV/Counter/Nonce  Type: ByteString  Length: 16 
+          Tag: Cryptographic Parameters  Type: Structure  Length: 32 
+            Tag: Block Cipher Mode  Type: Enumeration  Length: 4 
+            Tag: Padding Method  Type: Enumeration  Length: 4
+
+Apr 23, 2025 3:14:54 PM oracle.okv.kmip.OKVSSLConnection close
+INFO: Connection to OKV Server closed...
+
+Apr 23, 2025 3:14:54 PM oracle.okv.service.OKVTransporterImpl executeOperation
+INFO: Response message contents: 
+    Tag: Response Message  Type: Structure  Length: 408 
+      Tag: Response Header  Type: Structure  Length: 72 
+        Tag: Protocol Version  Type: Structure  Length: 32 
+          Tag: Protocol Version Major  Type: Integer  Length: 4 
+          Tag: Protocol Version Minor  Type: Integer  Length: 4 
+        Tag: Time Stamp  Type: Date-Time  Length: 8 
+        Tag: Batch Count  Type: Integer  Length: 4 
+      Tag: Batch Item  Type: Structure  Length: 320 
+        Tag: Operation   Type: Enumeration  Length: 4  Value: Decrypt 
+        Tag: Unique Batch Item ID  Type: ByteString  Length: 1 
+        Tag: Result Status  Type: Enumeration  Length: 4 
+        Tag: Response Payload  Type: Structure  Length: 176 
+          Tag: Unique Identifier  Type: TextString  Length: 36  Value: 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 
+          Tag: Data  Type: ByteString  Length: 120 
+        Tag: Message Extension   Type: Structure  Length: 80 
+          Tag: Vendor Identification  Type: TextString  Length: 18 
+          Tag: Criticality Indicator  Type: Boolean  Length: 8 
+          Tag: Vendor Extension   Type: Structure  Length: 24 
+            Tag: OKV Endpoint Configuration Flags Structure  Type: Structure  Length: 16 
+              Tag: OKV Endpoint Configuration Flags  Type: TextString  Length: 1
+
+2025-04-23 15:14:54 GMT LOG:  redirecting log output to logging collector process
+2025-04-23 15:14:54 GMT HINT:  Future log output will appear in directory "log".

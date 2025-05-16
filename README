@@ -1,0 +1,41 @@
+Installation:
+
+$ cd /var/lib/edb
+$ tar -xf kmip.tar
+
+Next remove directory okv and install auto-login endpoint into same location
+
+To use lookup the UUID for your key and use the following command to create a database named hrprod. Be sure to replace the name of the database twice in the command below!
+
+$ cd /var/lib/edb
+$ initdb -D hrprod -y  --key-unwrap-command='/var/lib/edb/kmip/bin/decrypt.sh 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 "%p"' --key-wrap-command='/var/lib/edb/kmip/bin/encrypt.sh  "%p" 7CD1A23D-AEC4-4D25-9333-BDDE6B045245' -U admin -W --auth-local=trust
+$ pg_ctl -D hrprod -l logfile start
+$ createdb hrprod -U admin
+$ psql -d hrprod -h localhost -U admin
+
+verify using following commands:
+
+$ psql -d hrprod -h localhost -U admin
+psql (17.4.0)
+Type "help" for help.
+
+hrprod=# SELECT pg_current_wal_lsn(), pg_walfile_name( pg_current_wal_lsn() );
+ pg_current_wal_lsn |     pg_walfile_name      
+--------------------+--------------------------
+ 0/4A399F8          | 000000010000000000000004
+(1 row)
+
+hrprod=# create table frank(name varchar2(20));
+CREATE TABLE
+hrprod=# insert into frank values ('joe');
+INSERT 0 1
+hrprod=# commit;
+COMMIT
+hrprod=# SELECT pg_current_wal_lsn(), pg_walfile_name( pg_current_wal_lsn() );
+ pg_current_wal_lsn |     pg_walfile_name      
+--------------------+--------------------------
+ 0/4A3AD80          | 000000010000000000000004
+(1 row)
+
+
+$ pg_waldump --data-encryption --key-file-name=pg_encryption/key.bin --key-unwrap-command='/var/lib/edb/kmip/bin/decrypt.sh 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 "%p"' -s 0/4A399F8 -e 0/4A3AD80

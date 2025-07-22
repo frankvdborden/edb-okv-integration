@@ -1,7 +1,7 @@
-export KMIP_DIR=/var/lib/edb/kmip
-export OKV_HOME=$KMIP_DIR/okv
-export KEYFILE=$1
-export UUID=$2
+export KMIP_DIR=/var/lib/edb/pg_okv
+export OKV_HOME=/opt/oracle/okvpostgres
+export UUID=$1
+export KEYFILE=$2
 
 read CLEAR_TEXT
 

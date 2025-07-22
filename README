@@ -1,14 +1,26 @@
 Installation:
 
 $ cd /var/lib/edb
-$ tar -xf kmip.tar
+$ mkdir pg_okv
 
-Next remove directory okv and install auto-login endpoint into same location
+install plugin in /var/lib/edb/pg_okv
 
-To use lookup the UUID for your key and use the following command to create a database named hrprod. Be sure to replace the name of the database twice in the command below!
+Download the java sdk (jsdk) from your OKV install. Create the path /var/lib/edb/pg_okv/jsdk/lib and copy the okvjsdk.jar file from the jsdk into this directory.
+
+Next install an auto-login OKV endpoint into e.g. /opt/oracle/okvpostgres
+
+Compile the class
+
+$ cd /var/lib/edb/pg_okv
+$ export CLASSPATH=`pwd`/jsdk/lib/okvjsdk.jar:`pwd`/kmip
+$ cd kmip
+$ javac javac KmipClient.java 
+
+Create and activate a key in OKV in the wallet that the endpoint has access to. Lookup the UUID for the key and use the following command to create a database named hrprod. 
 
 $ cd /var/lib/edb
-$ initdb -D hrprod -y  --key-unwrap-command='/var/lib/edb/kmip/bin/decrypt.sh 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 "%p"' --key-wrap-command='/var/lib/edb/kmip/bin/encrypt.sh  "%p" 7CD1A23D-AEC4-4D25-9333-BDDE6B045245' -U admin -W --auth-local=trust
+$ initdb -D hrprod -y  --key-unwrap-command='/var/lib/edb/pg_okv/bin/decrypt.sh 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 "%p"' --key-wrap-command='/var/lib/edb/pg_okv/bin/encrypt.sh 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 "%p"' -U admin -W --auth-local=trust
+$ pg_ctl -D hrprod -l logfile start 
 $ pg_ctl -D hrprod -l logfile start
 $ createdb hrprod -U admin
 $ psql -d hrprod -h localhost -U admin
@@ -38,4 +50,4 @@ hrprod=# SELECT pg_current_wal_lsn(), pg_walfile_name( pg_current_wal_lsn() );
 (1 row)
 
 
-$ pg_waldump --data-encryption --key-file-name=pg_encryption/key.bin --key-unwrap-command='/var/lib/edb/kmip/bin/decrypt.sh 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 "%p"' -s 0/4A399F8 -e 0/4A3AD80
+$ pg_waldump --data-encryption --key-file-name=pg_encryption/key.bin --key-unwrap-command='/var/lib/edb/pg_okv/bin/decrypt.sh 7CD1A23D-AEC4-4D25-9333-BDDE6B045245 "%p"' -s 0/4A399F8 -e 0/4A3AD80

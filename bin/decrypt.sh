@@ -1,8 +1,6 @@
-export KMIP_DIR=/var/lib/edb/kmip
-export OKV_HOME=$KMIP_DIR/okv
-export KEY_FILE=$1
-export DBNAME=$2
-export UUID=$3
+export KMIP_DIR=/var/lib/edb/pg_okv
+export OKV_HOME=/opt/oracle/okvpostgres
+export UUID=$1
+export KEY_FILE=$2
 
-echo $KEY_FILE >> /tmp/decrypt.out
-java -cp $KMIP_DIR/jsdk/lib/okvjsdk.jar:$KMIP_DIR/kmip KmipClient decrypt $UUID  $KEY_FILE $DBNAME
+java -cp $KMIP_DIR/jsdk/lib/okvjsdk.jar:$KMIP_DIR/kmip KmipClient decrypt $UUID  $KEY_FILE 

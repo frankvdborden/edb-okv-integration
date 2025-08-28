@@ -156,8 +156,11 @@ public class KmipClient {
 	   case "encrypt": 
               v_input = args[2];
 	      v_output = args[3];
+	      System.out.println("Encrypt input : " + v_input);
               String encryptedMessage = encrypt(v_uuid, okvService,v_input );
-              FileWriter writer = new FileWriter(v_output); 
+	      System.out.println("Encrypt output : " + encryptedMessage);
+	      /* overwrite content of key.bin in case of key rotation */
+              FileWriter writer = new FileWriter(v_output,false); 
 	      writer.write(encryptedMessage);
 	      writer.close();
 	      break;	
